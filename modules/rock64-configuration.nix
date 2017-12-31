@@ -10,6 +10,7 @@
     "ethaddr=\${ethaddr}"
     "eth1addr=\${eth1addr}"
     "serial=\${serial#}"
+    "console=tty1"
   ];
 
   services.mingetty.serialSpeed = [ 1500000 115200 ];
