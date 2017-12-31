@@ -14,6 +14,7 @@ buildLinuxWithPython {
   #    make rockchip_linux_defconfig
   #    + CONFIG_DMIID
   #    + CONFIG_AUTOFS4
+  #    + CONFIG_BINFMT_MISC
   configfile = ./linux_ayufan_4_4_config;
 
   allowImportFromDerivation = true; # Let nix check the assertions about the config
