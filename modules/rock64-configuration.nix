@@ -27,4 +27,10 @@
       ExecStart = "${pkgs.ethtool}/bin/ethtool -K eth0 rx off tx off";
     };
   };
+
+  services.udev.extraRules = ''
+    KERNEL=="mali", MODE="0660", GROUP="video"
+    KERNEL=="rkvdec", MODE="0660", GROUP="video"
+    KERNEL=="vpu-service", MODE="0660", GROUP="video"
+  '';
 }
