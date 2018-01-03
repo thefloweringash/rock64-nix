@@ -1,0 +1,26 @@
+diff -ur a/configure.ac b/configure.ac
+--- a/configure.ac	2017-09-13 22:01:51.000000000 +0900
++++ b/configure.ac	2018-01-03 15:36:14.817023484 +0900
+@@ -81,6 +81,9 @@
+ 
+ # Checks for libraries.
+ 
++PKG_CHECK_MODULES([LIBDRM], [libdrm])
++XORG_CFLAGS="$XORG_CFLAGS $LIBDRM_CFLAGS"
++
+ 
+ AC_SUBST([moduledir])
+ 
+Only in b: configure.ac~
+diff -ur a/src/Makefile.am b/src/Makefile.am
+--- a/src/Makefile.am	2017-09-13 22:01:51.000000000 +0900
++++ b/src/Makefile.am	2018-01-03 15:37:58.916853548 +0900
+@@ -27,7 +27,6 @@
+ mali_drv_ladir = @moduledir@/drivers
+ 
+ AM_CFLAGS = @XORG_CFLAGS@ \
+-	-I/usr/include/libdrm \
+ 	-I$(MALI_DDK)/include \
+ 	-I$(MALI_DDK)/internal/include/khronos \
+ 	-I$(MALI_DDK)/src/ump/include \
+Only in b/src: Makefile.am~

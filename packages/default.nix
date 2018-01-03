@@ -35,5 +35,7 @@ in
     };
 
     linuxPackages_ayufan_4_15_rc3 = super.linuxPackagesFor self.rock64.linux_ayufan_4_15_rc3;
+
+    xf86videomali = super.callPackage ./xf86-video-mali.nix {};
   };
 }

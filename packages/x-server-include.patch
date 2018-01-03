@@ -1,0 +1,22 @@
+diff -ur a/x11/xf86-video-mali-0.0.1/src/mali_exa.h b/x11/xf86-video-mali-0.0.1/src/mali_exa.h
+--- a/src/mali_exa.h	2014-11-11 15:57:22.000000000 +0900
++++ b/src/mali_exa.h	2018-01-03 20:53:52.147759157 +0900
+@@ -23,6 +23,7 @@
+ #ifndef _MALI_EXA_H_
+ #define _MALI_EXA_H_
+ 
++#include "xorg-server.h"
+ #include "exa.h"
+ #include <ump/ump.h>
+ #if !(defined(UMP_VERSION_MAJOR) && UMP_VERSION_MAJOR == 2)
+diff -ur a/x11/xf86-video-mali-0.0.1/src/mali_fbdev.h b/x11/xf86-video-mali-0.0.1/src/mali_fbdev.h
+--- a/src/mali_fbdev.h	2014-11-11 15:57:22.000000000 +0900
++++ b/src/mali_fbdev.h	2018-01-03 20:54:01.329588066 +0900
+@@ -26,6 +26,7 @@
+ #include <linux/fb.h>
+ #include "mali_def.h"
+ 
++#include "xorg-server.h"
+ #include "xf86.h"
+ #include "exa.h"
+ 
