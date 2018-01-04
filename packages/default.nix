@@ -4,7 +4,10 @@ let buildLinuxWithPython = (args: (super.buildLinux args).overrideAttrs ({ nativ
     }));
 in
 {
+  # Packages fairly unique to the rock64
   rock64 = {
+    # rkbin is the exception: not unique to the rock64, but limited in scope to
+    # boot images.
     rkbin = super.callPackage ./rkbin.nix {};
 
     arm-trusted-firmware = super.callPackage ./arm-trusted-firmware.nix {};
@@ -35,5 +38,10 @@ in
     };
 
     linuxPackages_ayufan_4_15_rc3 = super.linuxPackagesFor self.rock64.linux_ayufan_4_15_rc3;
+
   };
+
+  # More generally applicable packages
+  rockchip_mpp_20170811 = super.callPackage ./rockchip_mpp_20170811.nix {};
+  rockchip_mpp_20171218 = super.callPackage ./rockchip_mpp_20171218.nix {};
 }
