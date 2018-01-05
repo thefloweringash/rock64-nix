@@ -19,7 +19,7 @@ in
     <nixos/modules/profiles/installation-device.nix>
     ./sd-image-rockchip.nix
     ./modules/rock64-configuration.nix
-    ./modules/rock64-packages.nix
+    ./modules/packages.nix
   ];
 
   assertions = lib.singleton {
