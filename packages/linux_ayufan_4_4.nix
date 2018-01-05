@@ -22,7 +22,7 @@ buildLinuxWithPython {
   src = fetchFromGitHub {
     owner = "ayufan-rock64";
     repo = "linux-kernel";
-    rev = "ayufan-rock64/linux-build/0.6.5";
-    sha256 = "1cypiy0l9kj7mc40sysbd081dwlx5ldaj4hpypi7vrjjl4mzs3pa";
+    rev = "ayufan-rock64/linux-build/0.6.9";
+    sha256 = "0qgjy54pxwk4g78fjl3zyk1aywx2y4njp4lk9xixmi52gbzmyk9q";
   };
 }

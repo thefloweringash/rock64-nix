@@ -1,7 +1,7 @@
 { stdenv, rkbin, uboot }:
 
 stdenv.mkDerivation {
-  name = "u-boot-idbloader-0.6.5";
+  name = "u-boot-idbloader-0.6.9";
 
   phases = [ "buildPhase" "installPhase" ];
 

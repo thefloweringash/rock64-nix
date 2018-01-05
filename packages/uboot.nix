@@ -1,20 +1,24 @@
-{ stdenv, fetchFromGitHub, buildUBoot, arm-trusted-firmware,
-  bc, dtc, openssl, python2, swig }:
+{ stdenv, fetchFromGitHub, fetchpatch, buildUBoot, arm-trusted-firmware }:
 
 buildUBoot {
   src = fetchFromGitHub {
     owner =  "ayufan-rock64";
     repo = "linux-u-boot";
-    rev = "ayufan-rock64/linux-build/0.6.5";
-    sha256 = "087bxx7ck52jiay5d10w15dhchqw9phz38iqmjnjpjjb5id1vgck";
+    rev = "ayufan-rock64/linux-build/0.6.9";
+    sha256 = "00z3g2h28cdnammmrzqdg1ksnnm58ar7kgvmxyv9c2sr1gqkkawb";
   };
 
-  # buildUBoot defaults + swig
-  nativeBuildInputs = [ bc dtc openssl python2 swig ];
+  version = "ayufan-rock64-0.6.9";
 
-  version = "ayufan-rock64-0.6.5";
+  patches = [
+      (fetchpatch {
+        url = https://github.com/dezgeg/u-boot/commit/cbsize-2017-11.patch;
+        sha256 = "08rqsrj78aif8vaxlpwiwwv1jwf0diihbj0h88hc0mlp0kmyqxwm";
+      })
 
-  patches = [];
+      # Adapted from https://github.com/dezgeg/u-boot/commit/pythonpath-2017-11.patch
+      ./uboot-python-path.patch
+  ];
 
   postBuild= ''
     cp ${arm-trusted-firmware}/bl31.elf ./
