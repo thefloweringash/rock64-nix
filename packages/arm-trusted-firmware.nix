@@ -1,13 +1,17 @@
 { stdenv, fetchFromGitHub }:
 
+let
+  sources = import ./ayufan-rock64-sources.nix;
+in
+
 stdenv.mkDerivation {
-  name = "arm-trusted-firmware-rk3328-bl31-1.4";
+  name = "arm-trusted-firmware-rk3328-bl31-${sources.version}";
+  version = sources.version;
 
   src = fetchFromGitHub {
-    owner =  "ARM-software";
+    owner =  "ayufan-rock64";
     repo = "arm-trusted-firmware";
-    rev = "v1.4";
-    sha256 = "15m10dfgqkgw6rmzgfg1xzp1si9d5jwzyrcb7cp3y9ckj6mvp3i3";
+    inherit (sources.arm-trusted-firmware) rev sha256;
   };
 
   hardeningDisable = [ "all" ];

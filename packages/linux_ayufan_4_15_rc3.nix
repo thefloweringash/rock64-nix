@@ -1,5 +1,9 @@
 { stdenv, hostPlatform, fetchFromGitHub, perl, buildLinux, ... } @ args:
 
+let
+  sources = import ./ayufan-rock64-sources.nix;
+in
+
 # TODO: this uses nixpkgs, nowhere else in this repo does
 # Is the generic builder exported anywhere?
 import <nixpkgs/pkgs/os-specific/linux/kernel/generic.nix> (args // rec {
@@ -9,8 +13,7 @@ import <nixpkgs/pkgs/os-specific/linux/kernel/generic.nix> (args // rec {
   src = fetchFromGitHub {
     owner = "ayufan-rock64";
     repo = "linux-mainline-kernel";
-    rev = "ayufan-rock64/linux-build/0.6.5";
-    sha256 = "06pnphxw8lgi3jpad3czqz3fm4pc2liwin1w4v2gqqn985hhv1nb";
+    inherit (sources.linux-kernel-mainline) rev sha256;
   };
 } // (args.argsOverride or {}))
 

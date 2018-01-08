@@ -1,14 +1,17 @@
 { stdenv, fetchFromGitHub, fetchpatch, buildUBoot, arm-trusted-firmware }:
 
+let
+  sources = import ./ayufan-rock64-sources.nix;
+in
+
 buildUBoot {
   src = fetchFromGitHub {
     owner =  "ayufan-rock64";
     repo = "linux-u-boot";
-    rev = "ayufan-rock64/linux-build/0.6.9";
-    sha256 = "00z3g2h28cdnammmrzqdg1ksnnm58ar7kgvmxyv9c2sr1gqkkawb";
+    inherit (sources.linux-u-boot) rev sha256;
   };
 
-  version = "ayufan-rock64-0.6.9";
+  version = sources.version;
 
   patches = [
       (fetchpatch {

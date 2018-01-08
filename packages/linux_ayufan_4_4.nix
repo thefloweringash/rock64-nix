@@ -1,28 +1,49 @@
 { stdenv, fetchFromGitHub, buildLinux, python, kernelPatches ? [] }:
 
-let buildLinuxWithPython = (args: (buildLinux args).overrideAttrs ({ nativeBuildInputs, ... }: {
-      nativeBuildInputs = nativeBuildInputs ++ [ python ];
-    }));
-in
-buildLinuxWithPython {
-  inherit stdenv kernelPatches;
+let
+  buildLinuxWithPython = (args: (buildLinux args).overrideAttrs ({ nativeBuildInputs, ... }: {
+    nativeBuildInputs = nativeBuildInputs ++ [ python ];
+  }));
 
-  version = "4.4.103-ayufan-rock64";
-  modDirVersion = "4.4.103";
-
-  # Config file is
-  #    make rockchip_linux_defconfig
-  #    + CONFIG_DMIID
-  #    + CONFIG_AUTOFS4
-  #    + CONFIG_BINFMT_MISC
-  configfile = ./linux_ayufan_4_4_config;
-
-  allowImportFromDerivation = true; # Let nix check the assertions about the config
+  sources = import ./ayufan-rock64-sources.nix;
 
   src = fetchFromGitHub {
     owner = "ayufan-rock64";
     repo = "linux-kernel";
-    rev = "ayufan-rock64/linux-build/0.6.9";
-    sha256 = "0qgjy54pxwk4g78fjl3zyk1aywx2y4njp4lk9xixmi52gbzmyk9q";
+    inherit (sources.linux-kernel) rev sha256;
   };
+
+  configfile = stdenv.mkDerivation {
+    name = "ayufan-rock64-linux-kernel-config-${sources.version}";
+    version = sources.version;
+    inherit src;
+
+    patches = [ ./linux_ayufan_4_4_defconfig.patch ];
+
+    buildPhase = ''
+      make rockchip_linux_defconfig
+    '';
+
+    installPhase = ''
+      cp .config $out
+    '';
+  };
+
+in
+
+buildLinuxWithPython {
+  inherit stdenv kernelPatches;
+
+  src = fetchFromGitHub {
+    owner = "ayufan-rock64";
+    repo = "linux-kernel";
+    inherit (sources.linux-kernel) rev sha256;
+  };
+
+  version = "4.4.103-ayufan-rock64";
+  modDirVersion = "4.4.103";
+
+  inherit configfile;
+
+  allowImportFromDerivation = true; # Let nix check the assertions about the config
 }
