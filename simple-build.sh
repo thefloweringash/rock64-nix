@@ -15,14 +15,11 @@ nixos=${nixpkgs}/nixos
 echo "Using nixos=${nixos}"
 
 build_package() {
-    nix-build -E 'import <nixpkgs> { overlays = [ (import ./packages) ]; }' -A "$1"
+    nix-build -E 'import <nixpkgs> { overlays = [ (import ./packages) ]; }' -A "$1" -o "$1"
 }
 
-## It can be useful to force these things to pass first
-
-# build_package pkgs.rock64.linux_ayufan_4_4.src
-# build_package pkgs.rock64.uboot.src
-# build_package pkgs.rock64.idbloader
+# For updating an existing install
+build_package rock64.idbloader
 
 nix-build '<nixos>' \
     -I nixos=${nixos} \
