@@ -43,7 +43,7 @@ your desired kernel. For example:
 {
   include = [
     ./rock64-nix/modules/rock64-configuration.nix
-    ./rock64-nix/modules/rock64-packages.nix
+    ./rock64-nix/modules/packages.nix
   ];
 
   boot.kernelPackages = pkgs.rock64.linuxPackages_ayufan_4_4;
