@@ -1,19 +1,19 @@
 {
-  version = "0.6.13";
+  version = "0.6.14";
   linux-kernel = {
-    rev = "ayufan-rock64/linux-build/0.6.13";
-    sha256 = "0lwwngmj4izx43w94i8h1qbrz8mz87vzbqz2lw5gslshpw9h7nz3";
+    rev = "ayufan-rock64/linux-build/0.6.14";
+    sha256 = "11kbdq9rr5cx32sbbzcgxfi14mlgavbvmk1glq6vbq992n5v1ab4";
   };
   linux-mainline-kernel = {
-    rev = "ayufan-rock64/linux-build/0.6.13";
-    sha256 = "1qf9fa2w6kr84wdnh9bgp0yy4sr8hrrbf8jk1vcym22ynr9ipszz";
+    rev = "ayufan-rock64/linux-build/0.6.14";
+    sha256 = "05a1hpfzmggkfsfdjm8la5469fkg1bb7ain5j0gcv6sp05w046cl";
   };
   linux-u-boot = {
-    rev = "ayufan-rock64/linux-build/0.6.13";
-    sha256 = "12vfr7jq9iibfvz3614a17kfmsybp80g1wgkbm9q8h0awqk3r04b";
+    rev = "ayufan-rock64/linux-build/0.6.14";
+    sha256 = "0gjpsjavf8schpac7b82wq5s58w25a6v27dvdw2jjpkrzsnacr8d";
   };
   arm-trusted-firmware = {
-    rev = "ayufan-rock64/linux-build/0.6.13";
+    rev = "ayufan-rock64/linux-build/0.6.14";
     sha256 = "1rxp6b1mzmr3w2gg3n1r7rnk29nj92ilcramhy8119zf90by1hxv";
   };
 }
