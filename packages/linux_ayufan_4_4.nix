@@ -3,6 +3,9 @@
 let
   buildLinuxWithPython = (args: (buildLinux args).overrideAttrs ({ nativeBuildInputs, ... }: {
     nativeBuildInputs = nativeBuildInputs ++ [ python ];
+    postPatch = ''
+      patchShebangs .
+    '';
   }));
 
   sources = import ./ayufan-rock64-sources.nix;
@@ -12,6 +15,12 @@ let
     repo = "linux-kernel";
     inherit (sources.linux-kernel) rev sha256;
   };
+   
+  buildInputs = [ python ];
+
+  postPatch = ''
+    patchShebangs .
+  '';
 
   configfile = stdenv.mkDerivation {
     name = "ayufan-rock64-linux-kernel-config-${sources.version}";
