@@ -1,7 +1,7 @@
-{ stdenv, fetchFromGitHub, buildLinux, python, kernelPatches ? [] }:
+{ stdenv, hostPlatform, fetchFromGitHub, linuxManualConfig, python, kernelPatches ? [] }:
 
 let
-  buildLinuxWithPython = (args: (buildLinux args).overrideAttrs ({ nativeBuildInputs, ... }: {
+  buildLinuxWithPython = (args: (linuxManualConfig args).overrideAttrs ({ nativeBuildInputs, ... }: {
     nativeBuildInputs = nativeBuildInputs ++ [ python ];
     postPatch = ''
       patchShebangs .
@@ -42,6 +42,7 @@ in
 
 buildLinuxWithPython {
   inherit stdenv kernelPatches;
+  inherit hostPlatform;
 
   src = fetchFromGitHub {
     owner = "ayufan-rock64";

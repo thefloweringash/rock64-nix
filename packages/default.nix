@@ -1,5 +1,5 @@
 self: super:
-let buildLinuxWithPython = (args: (super.buildLinux args).overrideAttrs ({ nativeBuildInputs, ... }: {
+let buildLinuxWithPython = (args: (super.linuxManualConfig args).overrideAttrs ({ nativeBuildInputs, ... }: {
       nativeBuildInputs = nativeBuildInputs ++ [ self.python ];
     }));
 in
