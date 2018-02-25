@@ -1,6 +1,11 @@
-{ stdenv, hostPlatform, fetchFromGitHub, linuxManualConfig, python, kernelPatches ? [] }:
+{ stdenv, hostPlatform, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [] }:
+
+# Additional features cannot be added to this kernel
+assert features == {};
 
 let
+  passthru = { features = {}; };
+
   buildLinuxWithPython = (args: (linuxManualConfig args).overrideAttrs ({ nativeBuildInputs, ... }: {
     nativeBuildInputs = nativeBuildInputs ++ [ python ];
     postPatch = ''
@@ -38,22 +43,24 @@ let
     '';
   };
 
-in
+  drv = buildLinuxWithPython {
+    inherit stdenv kernelPatches;
+    inherit hostPlatform;
 
-buildLinuxWithPython {
-  inherit stdenv kernelPatches;
-  inherit hostPlatform;
+    src = fetchFromGitHub {
+      owner = "ayufan-rock64";
+      repo = "linux-kernel";
+      inherit (sources.linux-kernel) rev sha256;
+    };
 
-  src = fetchFromGitHub {
-    owner = "ayufan-rock64";
-    repo = "linux-kernel";
-    inherit (sources.linux-kernel) rev sha256;
+    version = "4.4.103-ayufan-rock64";
+    modDirVersion = "4.4.103";
+
+    inherit configfile;
+
+    allowImportFromDerivation = true; # Let nix check the assertions about the config
   };
 
-  version = "4.4.103-ayufan-rock64";
-  modDirVersion = "4.4.103";
+in
 
-  inherit configfile;
-
-  allowImportFromDerivation = true; # Let nix check the assertions about the config
-}
+stdenv.lib.extendDerivation true passthru drv
