@@ -14,14 +14,8 @@ Weekend hobby project. Works for me.
 ## Building
 
 ```
-nix-build '<nixos>' \
-  -I nixos=... \
-  -I nixos-config=sd-image-rock64.nix \
-  -A config.system.build.sdImage
+nix-build release.nix -A sdImage
 ```
-
-`<nixos>` should refer to the `nixos` subdirectory of a nixpkgs
-checkout.
 
 ## Installation
 

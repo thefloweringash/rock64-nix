@@ -4,7 +4,7 @@
 
 let
   extlinux-conf-builder =
-    import <nixos/modules/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.nix> {
+    import <nixpkgs/nixos/modules/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.nix> {
       inherit pkgs;
     };
 
@@ -15,8 +15,8 @@ let
 in
 {
   imports = [
-    <nixos/modules/profiles/base.nix>
-    <nixos/modules/profiles/installation-device.nix>
+    <nixpkgs/nixos/modules/profiles/base.nix>
+    <nixpkgs/nixos/modules/profiles/installation-device.nix>
     ./sd-image-rockchip.nix
     ./modules/rock64-configuration.nix
     ./modules/packages.nix
