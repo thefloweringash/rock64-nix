@@ -33,7 +33,7 @@ in
   # FIXME: this probably should be in installation-device.nix
   users.extraUsers.root.initialHashedPassword = "";
 
-  sdImage.bootloader = "${pkgs.rock64.idbloader}";
+  sdImage.bootloader = "${pkgs.ubootRock64}/idbloader.img";
   sdImage.storePaths = [ config.system.build.toplevel ];
   sdImage.installPaths = [ bootConfig ];
 }

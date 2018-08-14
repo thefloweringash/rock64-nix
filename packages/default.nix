@@ -5,21 +5,7 @@ let buildLinuxWithPython = (args: (super.linuxManualConfig args).overrideAttrs (
 in
 {
   # Packages fairly unique to the rock64
-  rock64 = {
-    # rkbin is the exception: not unique to the rock64, but limited in scope to
-    # boot images.
-    rkbin = super.callPackage ./rkbin.nix {};
-
-    arm-trusted-firmware = super.callPackage ./arm-trusted-firmware.nix {};
-
-    uboot = super.callPackage ./uboot.nix {
-      inherit (self.rock64) arm-trusted-firmware;
-    };
-
-    idbloader = super.callPackage ./idbloader.nix {
-      inherit (self.rock64) uboot rkbin;
-    };
-
+  rock64 = rec {
     linux_ayufan_4_4 = super.callPackage ./linux_ayufan_4_4.nix {
       kernelPatches = with self; [
         kernelPatches.bridge_stp_helper
