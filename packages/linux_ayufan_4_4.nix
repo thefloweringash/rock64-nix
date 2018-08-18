@@ -1,66 +1,14 @@
-{ stdenv, hostPlatform, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [] }:
+{ stdenv, fetchFromGitHub, buildPackages, hostPlatform, fetchurl, perl, buildLinux, ... } @ args:
 
-# Additional features cannot be added to this kernel
-assert features == {};
-
-let
-  passthru = { features = {}; };
-
-  buildLinuxWithPython = (args: (linuxManualConfig args).overrideAttrs ({ nativeBuildInputs, ... }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ python ];
-    postPatch = ''
-      patchShebangs .
-    '';
-  }));
-
-  sources = import ./ayufan-rock64-sources.nix;
-
+buildLinux (args // {
   src = fetchFromGitHub {
     owner = "ayufan-rock64";
     repo = "linux-kernel";
-    inherit (sources.linux-kernel) rev sha256;
-  };
-   
-  buildInputs = [ python ];
-
-  postPatch = ''
-    patchShebangs .
-  '';
-
-  configfile = stdenv.mkDerivation {
-    name = "ayufan-rock64-linux-kernel-config-${sources.version}";
-    version = sources.version;
-    inherit src;
-
-    patches = [ ./linux_ayufan_4_4_defconfig.patch ];
-
-    buildPhase = ''
-      make rockchip_linux_defconfig
-    '';
-
-    installPhase = ''
-      cp .config $out
-    '';
+    rev = "4.4.138-1094-rockchip-ayufan";
+    sha256 = "0b5f15xdss48vjn71wcaiqmpmnfx4ccrcdrj5zbv1cb6d9zgx2cg";
   };
 
-  drv = buildLinuxWithPython {
-    inherit stdenv kernelPatches;
-    inherit hostPlatform;
+  version = "4.4.138";
 
-    src = fetchFromGitHub {
-      owner = "ayufan-rock64";
-      repo = "linux-kernel";
-      inherit (sources.linux-kernel) rev sha256;
-    };
-
-    version = "4.4.103-ayufan-rock64";
-    modDirVersion = "4.4.103";
-
-    inherit configfile;
-
-    allowImportFromDerivation = true; # Let nix check the assertions about the config
-  };
-
-in
-
-stdenv.lib.extendDerivation true passthru drv
+  defconfig = "rockchip_linux_defconfig";
+} // (args.argsOverride or {}))
