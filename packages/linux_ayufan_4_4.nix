@@ -1,6 +1,6 @@
-{ stdenv, fetchFromGitHub, buildPackages, hostPlatform, fetchurl, perl, buildLinux, ... } @ args:
+{ stdenv, lib, fetchFromGitHub, buildPackages, hostPlatform, fetchurl, perl, buildLinux, ... } @ args:
 
-buildLinux (args // {
+let
   src = fetchFromGitHub {
     owner = "ayufan-rock64";
     repo = "linux-kernel";
@@ -10,5 +10,43 @@ buildLinux (args // {
 
   version = "4.4.138";
 
+  brokenFeatures = [
+    "MALI_BIFROST"
+    "POWERVR_ROGUE_M"
+    "TOUCHSCREEN_GSL3673_800X1280"
+    "VIDEO_IMX323"
+    "VIDEO_OV9750"
+    "RK30_CAMERA_PINGPONG"
+    "CAMSYS_CIF"
+    "RTL8723BS"
+    "RTL8723DS"
+    "PWM_CROS_EC"
+    "RK_NANDC_NAND"
+    "RK_SFC_NAND"
+    "RK_SFC_NOR"
+    "RK_NAND"
+    "USB_DWC3_PCI"
+    "BACKLIGHT_LM3630A"
+    "FB_ROCKCHIP"
+    "SND_SOC_CX20810"
+    "SND_SOC_ROCKCHIP_MULTI_DAIS"
+    "SND_SOC_ROCKCHIP_VAD"
+    "COMPASS_MMC328X"
+    "INV_MPU_IIO"
+    "USB20_HOST"
+    "USB20_OTG"
+  ];
+
+  disableFeatures = features:
+    let
+      inherit (import <nixpkgs/lib/kernel.nix> { inherit lib version; }) no;
+    in  lib.listToAttrs (map (name: { inherit name; value = no; }) features);
+in
+
+buildLinux (args // rec {
+  inherit src version;
+
   defconfig = "rockchip_linux_defconfig";
+
+  structuredExtraConfig = disableFeatures brokenFeatures;
 } // (args.argsOverride or {}))
