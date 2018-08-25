@@ -35,6 +35,12 @@ let
     "INV_MPU_IIO"
     "USB20_HOST"
     "USB20_OTG"
+
+    # Something about VIDEOBUF2_DMA_CONTIG causes linker failures due
+    # to undefined symbols and invalid relocations. It's automatically
+    # selected by a lot of the V4L2 packages. Let's just turn off the
+    # whole tree.
+    "VIDEO_V4L2"
   ];
 
   disableFeatures = features:
