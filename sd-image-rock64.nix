@@ -30,9 +30,6 @@ in
 
   boot.kernelPackages = pkgs.rock64.linuxPackages_ayufan_4_4;
 
-  # FIXME: this probably should be in installation-device.nix
-  users.extraUsers.root.initialHashedPassword = "";
-
   sdImage.bootloader = "${pkgs.ubootRock64}/idbloader.img";
   sdImage.storePaths = [ config.system.build.toplevel ];
   sdImage.installPaths = [ bootConfig ];
