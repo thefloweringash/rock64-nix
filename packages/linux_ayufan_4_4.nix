@@ -1,4 +1,4 @@
-{ stdenv, lib, hostPlatform, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [] }:
+{ stdenv, lib, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [] }:
 
 # Additional features cannot be added to this kernel
 assert features == {};
@@ -43,7 +43,6 @@ let
 
   drv = linuxManualConfig {
     inherit stdenv kernelPatches;
-    inherit hostPlatform;
 
     inherit src;
 

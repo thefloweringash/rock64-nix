@@ -1,4 +1,4 @@
-{ stdenv, hostPlatform, fetchFromGitHub, perl, linuxManualConfig, ... } @ args:
+{ stdenv, fetchFromGitHub, perl, linuxManualConfig, ... } @ args:
 
 let
   sources = import ./ayufan-rock64-sources.nix;
