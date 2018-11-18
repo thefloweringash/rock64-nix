@@ -10,6 +10,10 @@
     "ethaddr=\${ethaddr}"
     "eth1addr=\${eth1addr}"
     "serial=\${serial#}"
+
+    # The last console gets the systemd status messages.
+    # Assume more people will find HDMI more useful than serial.
+    "console=uart8250,mmio32,0xff130000"
     "console=tty1"
   ];
 
