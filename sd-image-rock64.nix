@@ -30,6 +30,10 @@ in
 
   boot.kernelPackages = pkgs.rock64.linuxPackages_ayufan_4_4;
 
+  # Like nixos/modules/profiles/base.nix, but without zfs, because it
+  # doesn't build against our funky kernel.
+  boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+
   sdImage.bootloader = "${pkgs.ubootRock64}/idbloader.img";
   sdImage.storePaths = [ config.system.build.toplevel ];
   sdImage.installPaths = [ bootConfig ];
