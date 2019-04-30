@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [] }:
+{ stdenv, lib, fetchFromGitHub, linuxManualConfig, python, features ? {}, kernelPatches ? [], randstructSeed ? null }:
 
 # Additional features cannot be added to this kernel
 assert features == {};
@@ -41,7 +41,7 @@ let
     '';
   };
 
-  drv = linuxManualConfig {
+  drv = linuxManualConfig ({
     inherit stdenv kernelPatches;
 
     inherit src;
@@ -52,7 +52,7 @@ let
     inherit configfile;
 
     allowImportFromDerivation = true; # Let nix check the assertions about the config
-  };
+  } // lib.optionalAttrs (randstructSeed != null) { inherit randstructSeed; });
 
 in
 
