@@ -4,6 +4,7 @@
 # resizes the filesystem at boot time.
 { pkgs
 , storePaths
+, installPaths ? []
 , volumeLabel
 , uuid ? "44444444-4444-4444-8888-888888888888"
 , e2fsprogs
@@ -19,6 +20,8 @@ in
 pkgs.stdenv.mkDerivation {
   name = "ext4-fs.img";
 
+  inherit installPaths;
+
   nativeBuildInputs = [e2fsprogs.bin libfaketime perl lkl];
 
   buildCommand =
@@ -28,8 +31,8 @@ pkgs.stdenv.mkDerivation {
 
       # Make a crude approximation of the size of the target image.
       # If the script starts failing, increase the fudge factors here.
-      numInodes=$(find $storePaths | wc -l)
-      numDataBlocks=$(du -c -B 4096 --apparent-size $storePaths | awk '$2 == "total" { print int($1 * 1.03) }')
+      numInodes=$(find $storePaths $installPaths | wc -l)
+      numDataBlocks=$(du -c -B 4096 --apparent-size $storePaths $installPaths | awk '$2 == "total" { print int($1 * 1.03) }')
       bytes=$((2 * 4096 * $numInodes + 4096 * $numDataBlocks))
       echo "Creating an EXT4 image of $bytes bytes (numInodes=$numInodes, numDataBlocks=$numDataBlocks)"
 
@@ -46,6 +49,11 @@ pkgs.stdenv.mkDerivation {
 
       echo "copying store paths to image..."
       cptofs -t ext4 -i $out $storePaths /nix/store/
+
+      echo "copying installed paths to image..."
+      for installPath in "''${installPaths[@]}"; do
+        cptofs -t ext4 -i $out $installPaths/* /
+      done
 
       # I have ended up with corrupted images sometimes, I suspect that happens when the build machine's disk gets full during the build.
       if ! fsck.ext4 -n -f $out; then
