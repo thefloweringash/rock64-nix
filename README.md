@@ -1,3 +1,13 @@
+# Status Update: Use nixpkgs instead
+
+Upstream nixpkgs has the required components to run nixos on the rock64.
+Configuring the bootloader is a manual process, but well [documented on the
+wiki][nix-wiki-rock64].
+
+[nix-wiki-rock64]: https://nixos.wiki/wiki/NixOS_on_ARM/PINE64_ROCK64
+
+---
+
 # NixOS on Rock64
 
 This project is a fairly straightforward port of [ayufan][]'s
